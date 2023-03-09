@@ -85,6 +85,9 @@ function Hook(modules, options, onrequire) {
       filename = relativeResolveCache[relResolveCacheIdentifier];
       if (!filename) {
         filename = Module._resolveFilename(id, this);
+        // We add the identifier to the cache at this point, rather than later,
+        // to avoid situations where we resolve the filename and it is exists in the self.cache .
+        // In such cases, we would return the cached value without adding the identifier to the resolve cache.
         relativeResolveCache[relResolveCacheIdentifier] = filename;
       }
     }
