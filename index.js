@@ -56,6 +56,8 @@ function Hook(modules, options, onrequire) {
 
   debug('registering require hook')
 
+  const relativeResolveCache = { __proto__: null };
+
   this._require = Module.prototype.require = function(id) {
     if (self._unhooked === true) {
       // if the patched require function could not be removed because
@@ -64,6 +66,8 @@ function Hook(modules, options, onrequire) {
       debug('ignoring require call - module is soft-unhooked')
       return self._origRequire.apply(this, arguments)
     }
+
+    const relResolveCacheIdentifier = `${this.path}\x00${id}`;
 
     const core = isCore(id)
     let filename // the string used for caching
@@ -78,7 +82,11 @@ function Hook(modules, options, onrequire) {
         }
       }
     } else {
-      filename = Module._resolveFilename(id, this)
+      filename = relativeResolveCache[relResolveCacheIdentifier];
+      if (!filename) {
+        filename = Module._resolveFilename(id, this);
+        relativeResolveCache[relResolveCacheIdentifier] = filename;
+      }
     }
 
     let moduleName, basedir
@@ -98,7 +106,16 @@ function Hook(modules, options, onrequire) {
       patching.add(filename)
     }
 
-    const exports = self._origRequire.apply(this, arguments)
+    let exports;
+    let threw = true;
+    try {
+      exports = self._origRequire.apply(this, arguments)
+      threw = false;
+    } finally {
+      if (threw) {
+        delete relativeResolveCache[relativeResolveCache];
+      }
+    }
 
     // If it's already patched, just return it as-is.
     if (isPatching === true) {
