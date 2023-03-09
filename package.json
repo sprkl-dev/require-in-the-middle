@@ -1,6 +1,6 @@
 {
   "name": "@sprkl/require-in-the-middle",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "description": "Module to hook into the Node.js require function",
   "main": "index.js",
   "dependencies": {
