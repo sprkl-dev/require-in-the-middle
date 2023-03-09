@@ -28,7 +28,7 @@ if (Module.isBuiltin) { // as of node v18.6.0
 // 'foo/bar.js' or 'foo/bar/index.js' => 'foo/bar'
 const normalize = /([/\\]index)?(\.js)?$/
 
-function Hook (modules, options, onrequire) {
+function Hook(modules, options, onrequire) {
   if ((this instanceof Hook) === false) return new Hook(modules, options, onrequire)
   if (typeof modules === 'function') {
     onrequire = modules
@@ -56,7 +56,7 @@ function Hook (modules, options, onrequire) {
 
   debug('registering require hook')
 
-  this._require = Module.prototype.require = function (id) {
+  this._require = Module.prototype.require = function(id) {
     if (self._unhooked === true) {
       // if the patched require function could not be removed because
       // someone else patched it after it was patched here, we just
@@ -146,7 +146,7 @@ function Hook (modules, options, onrequire) {
         // figure out if this is the main module file, or a file inside the module
         let res
         try {
-          res = resolve.sync(moduleName, { basedir })
+          res = require.resolve(moduleName, { paths: [basedir] });
         } catch (e) {
           debug('could not resolve module: %s', moduleName)
           return exports // abort if module could not be resolved (e.g. no main in package.json and no index.js file)
@@ -180,7 +180,7 @@ function Hook (modules, options, onrequire) {
   }
 }
 
-Hook.prototype.unhook = function () {
+Hook.prototype.unhook = function() {
   this._unhooked = true
   if (this._require === Module.prototype.require) {
     Module.prototype.require = this._origRequire
@@ -190,7 +190,7 @@ Hook.prototype.unhook = function () {
   }
 }
 
-function resolveModuleName (stat) {
+function resolveModuleName(stat) {
   const normalizedPath = path.sep !== '/' ? stat.path.split(path.sep).join('/') : stat.path
   return path.posix.join(stat.name, normalizedPath).replace(normalize, '')
 }
