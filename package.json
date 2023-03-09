@@ -1,5 +1,5 @@
 {
-  "name": "require-in-the-middle",
+  "name": "@sprkl/require-in-the-middle",
   "version": "5.2.0",
   "description": "Module to hook into the Node.js require function",
   "main": "index.js",
@@ -28,7 +28,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elastic/require-in-the-middle.git"
+    "url": "git+https://github.com/sprkl-dev/require-in-the-middle.git"
   },
   "keywords": [
     "require",
@@ -46,9 +46,9 @@
   "author": "Thomas Watson Steen <w@tson.dk> (https://twitter.com/wa7son)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/elastic/require-in-the-middle/issues"
+    "url": "https://github.com/sprkl-dev/require-in-the-middle/issues"
   },
-  "homepage": "https://github.com/elastic/require-in-the-middle#readme",
+  "homepage": "https://github.com/sprkl-dev/require-in-the-middle#readme",
   "engines": {
     "node": ">=6"
   }
